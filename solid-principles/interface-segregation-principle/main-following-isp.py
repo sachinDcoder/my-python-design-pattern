@@ -34,7 +34,7 @@ class MultiFunctionPrinter(Printer, Scanner, FaxMachine):
         pass
 
 
-class OldFashionPrintter(Printer):
+class OldFashionPrinter(Printer):
     def print(self, document):
         print(f"OldFashionPrintter is printing the document: {document}...")
 
@@ -65,7 +65,7 @@ def main():
     msp.fax("Working")
     msp.scan("Working")
 
-    ofp = OldFashionPrintter()
+    ofp = OldFashionPrinter()
     ofp.print("Working")
 
     pc = Photocopier()
