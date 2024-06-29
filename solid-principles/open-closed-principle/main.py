@@ -43,8 +43,10 @@ class ProductFilter:
         return list(filter(lambda product: product.color == color and product.size == size, products))
 
     def filter_by_size_and_color_and_quality(self, products, size, color, quality):
-        return list(filter(lambda product: product.color == color and product.size == size and product.quality == quality,
-                           products))
+        return list(filter(lambda product: product.color == color and product.size == size and product.quality == quality, products))
+
+    def filter_by_size_or_quality(self, products, size, quality):
+        return list(filter(lambda product: product.size == size or product.quality == quality, products))
 
 
 def without_ocp(products):
@@ -53,6 +55,7 @@ def without_ocp(products):
     print(product_filter.filter_by_size(products, Size.SMALL))
     print(product_filter.filter_by_size_and_color(products, Size.SMALL, Color.GREEN))
     print(product_filter.filter_by_size_and_color_and_quality(products, Size.MEDIUM, Color.GREEN, Quality.GOOD))
+    print(product_filter.filter_by_size_or_quality(products, Size.SMALL, Quality.ROTTEN))
 
 
 # Using Open and Closed Principle, implementation by Specification
@@ -63,6 +66,9 @@ class Specification(ABC):
 
     def __and__(self, other):
         return AndSpecification(self, other)
+
+    def __or__(self, other):
+        return OrSpecification(self, other)
 
 
 class Filter:
@@ -100,16 +106,20 @@ class AndSpecification(Specification):
         self.args = args
 
     def is_satisfied(self, item):
-        return all(map(lambda spec: spec.is_satisfied(item), self.args))
+        return all(spec.is_satisfied(item) for spec in self.args)
+
+
+class OrSpecification(Specification):
+    def __init__(self, *args):
+        self.args = args
+
+    def is_satisfied(self, item):
+        return any(spec.is_satisfied(item) for spec in self.args)
 
 
 class BetterFilter:
     def filter(self, items, spec):
-        filter_item = []
-        for item in items:
-            if spec.is_satisfied(item):
-                filter_item.append(item)
-        return filter_item
+        return [item for item in items if spec.is_satisfied(item)]
 
 
 def ocp(products):
@@ -127,6 +137,10 @@ def ocp(products):
     medium = SizeSpecification(Size.MEDIUM)
     medium_green_good = medium & green & good
     print(better_filter.filter(products, medium_green_good))
+
+    rotten = QualitySpecification(Quality.ROTTEN)
+    rotten_or_small = rotten | small
+    print(better_filter.filter(products, rotten_or_small))
 
 
 def main():
