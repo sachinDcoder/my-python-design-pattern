@@ -147,7 +147,7 @@ def main():
     apple = Product("apple", Color.GREEN, Size.MEDIUM, Quality.GOOD)
     grapes = Product("grapes", Color.GREEN, Size.SMALL, Quality.GOOD)
     berry = Product("berry", Color.BLUE, Size.SMALL, Quality.GOOD)
-    banana = Product("berry", Color.GREEN, Size.MEDIUM, Quality.ROTTEN)
+    banana = Product("banana", Color.GREEN, Size.MEDIUM, Quality.ROTTEN)
     products = [apple, grapes, berry, banana]
 
     print("Breaking Open and Close Principle")
