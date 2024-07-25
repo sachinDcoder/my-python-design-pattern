@@ -34,7 +34,7 @@ class LineToPointAdapter:
         self.h = hash(line)
         if self.h in self.cache:
             return
-            
+
         print(f'Generating Points for Line '
               f'[{line.start.x, line.start.y}] -> [{line.end.x, line.end.y}]')
 
@@ -46,10 +46,10 @@ class LineToPointAdapter:
         points = []
 
         if right - left == 0:
-            for y in range(top, bottom):
+            for y in range(bottom, top + 1):
                 points.append(Point(left, y))
         if top - bottom == 0:
-            for x in range(left, right):
+            for x in range(left, right + 1):
                 points.append(Point(x, top))
 
         self.cache[self.h] = points

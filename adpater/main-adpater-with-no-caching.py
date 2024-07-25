@@ -31,7 +31,7 @@ class LineToPointAdapter(list):
 
     def __init__(self, line):
         super().__init__()
-        self.count += 1
+        LineToPointAdapter.count += 1
         print(f'{self.count}: Generating Points for Line '
               f'[{line.start.x, line.start.y}] -> [{line.end.x, line.end.y}]')
 
@@ -41,15 +41,15 @@ class LineToPointAdapter(list):
         bottom = min(line.start.y, line.end.y)
 
         if right - left == 0:
-            for y in range(top, bottom):
+            for y in range(bottom, top + 1):
                 self.append(Point(left, y))
         if top - bottom == 0:
-            for x in range(left, right):
+            for x in range(left, right + 1):
                 self.append(Point(x, top))
 
 
 def draw(rectangles):
-    print("---- Drawing ------")
+    print("\n\n---- Drawing ------")
     for rc in rectangles:
         for line in rc:
             adapter = LineToPointAdapter(line)
