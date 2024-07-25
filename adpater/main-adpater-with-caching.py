@@ -26,13 +26,16 @@ class Rectangle(list):
         self.append(Line(Point(x, y), Point(x, y + height)))
 
 
-class LineToPointAdapter(list):
-    count = 0
+class LineToPointAdapter:
+    cache = {}
 
     def __init__(self, line):
         super().__init__()
-        self.count += 1
-        print(f'{self.count}: Generating Points for Line '
+        self.h = hash(line)
+        if self.h in self.cache:
+            return
+            
+        print(f'Generating Points for Line '
               f'[{line.start.x, line.start.y}] -> [{line.end.x, line.end.y}]')
 
         left = min(line.start.x, line.end.x)
@@ -40,12 +43,19 @@ class LineToPointAdapter(list):
         top = max(line.start.y, line.end.y)
         bottom = min(line.start.y, line.end.y)
 
+        points = []
+
         if right - left == 0:
             for y in range(top, bottom):
-                self.append(Point(left, y))
+                points.append(Point(left, y))
         if top - bottom == 0:
             for x in range(left, right):
-                self.append(Point(x, top))
+                points.append(Point(x, top))
+
+        self.cache[self.h] = points
+
+    def __iter__(self):
+        return iter(self.cache[self.h])
 
 
 def draw(rectangles):
