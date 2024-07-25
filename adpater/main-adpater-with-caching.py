@@ -16,6 +16,15 @@ class Line:
         self.start = start
         self.end = end
 
+    def __eq__(self, other):
+        if isinstance(other, Line):
+            return (self.start.x, self.start.y, self.end.x, self.end.y) \
+                == (other.start.x, other.start.y, other.end.x, other.end.y)
+        return False
+
+    def __hash__(self):
+        return hash((self.start.x, self.start.y, self.end.x, self.end.y))
+
 
 class Rectangle(list):
     def __init__(self, x, y, width, height):
