@@ -1,9 +1,10 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 
 
 class Shape(ABC):
+    @abstractmethod
     def __str__(self):
-        return ''
+        pass
 
 
 class Circle(Shape):
@@ -28,7 +29,7 @@ class Square(Shape):
 class ColoredShape(Shape):
     def __init__(self, shape, color):
         if isinstance(shape, ColoredShape):
-            raise Exception('Cannot apply color twice')
+            raise ValueError('Cannot apply color twice')
         self.shape = shape
         self.color = color
 
@@ -56,8 +57,11 @@ def main():
     half_transparent_red_circle = TransparentShape(red_circle, 0.5)
     print(half_transparent_red_circle)
 
-    mixed_color = ColoredShape(ColoredShape(circle, 'Red'), 'Green')  # shouldn't be allowed
-    print(mixed_color)
+    try:
+        mixed_color = ColoredShape(ColoredShape(circle, 'Red'), 'Green')  # shouldn't be allowed
+        print(mixed_color)
+    except ValueError as e:
+        print(e)
 
 
 if __name__ == "__main__":
