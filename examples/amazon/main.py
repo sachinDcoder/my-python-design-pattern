@@ -40,7 +40,7 @@ class Item:
 
 
 @dataclass
-class Customer:
+class Customer(ABC):
     customer_id: uuid
     cart: 'ShoppingCart'
     search: 'Search'
@@ -174,6 +174,7 @@ class Order:
     order_value: float
     buyer: Buyer
     order_logs: List[OrderLog]
+    notification_service: 'NotificationService'
     order_time: datetime
 
     def place_order(self) -> OrderStatus:
@@ -219,7 +220,7 @@ class MessageAttribute:
     desc: str
 
 
-class Notification:
+class Notification(ABC):
     def send_notification(self, message_attribute: MessageAttribute) -> bool:
         raise NotImplementedError
 
